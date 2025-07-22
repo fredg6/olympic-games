@@ -20,6 +20,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, olympic-games');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('olympic-games app is running!');
   });
 });

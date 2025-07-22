@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { take } from 'rxjs';
+import { OlympicService } from './core/services/olympic.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +9,10 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('olympic-games');
+export class App implements OnInit {
+  private olympicService = inject(OlympicService);
+
+  ngOnInit(): void {
+    this.olympicService.loadInitialData().pipe(take(1)).subscribe();
+  }
 }
