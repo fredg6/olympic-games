@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
+import { Participation } from '../models/participation';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,11 @@ export class OlympicService {
 
   getOlympics() {
     return this.olympics$.asObservable();
+  }
+
+  computeCountryTotalNumberOfMedals(countryParticipations: Participation[]): number {
+    let toReturn: number = 0;
+    countryParticipations.forEach(p => toReturn += p.medalsCount)
+    return toReturn;
   }
 }

@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+mat-card {
+  @include mat.card-overrides((
+    outlined-container-shape: 10px,
+    outlined-outline-color: #04838F,
+    outlined-outline-width: 2px,
+    title-text-size: medium,
+    title-text-weight: 400
+  ));
+  margin: 0 10px;
+  text-align: center;
+}
+
+mat-card-title {
+  color: #7F7F7F;
+}
+
+mat-card-content {
+    font-size: medium;
+    font-weight: bold;
+}

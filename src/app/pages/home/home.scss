@@ -1,0 +1,15 @@
+mat-grid-tile div {
+    justify-content: center;
+}
+
+.pieChartTooltip {
+  padding: 5px;
+  max-width: fit-content;
+  border-radius: 5px;
+  background-color: #04838F;
+  text-align: center;
+  span {
+    font-size: medium;
+    color: white;
+  }
+}

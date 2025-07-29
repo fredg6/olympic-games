@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { take } from 'rxjs';
-import { OlympicService } from './core/services/olympic.service';
+import { OlympicService } from './core/services/olympic-games-api';
 
 @Component({
   selector: 'app-root',
