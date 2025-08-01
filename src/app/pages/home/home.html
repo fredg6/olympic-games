@@ -3,24 +3,21 @@
         <div class="page-title">Medals per country</div>
     </mat-grid-tile>
     <mat-grid-tile>
-        @if (numberOfJOs$ | async; as numberOfJOs) {
-            <app-page-info-card label="Number of JOs" [value]="numberOfJOs"></app-page-info-card>
-        }
+        <app-page-info-card label="Number of JOs" [value]="numberOfJOs"></app-page-info-card>
         @if ((olympics$ | async)?.length; as numberOfCountries) {
             <app-page-info-card label="Number of countries" [value]="numberOfCountries"></app-page-info-card>
         }
     </mat-grid-tile>
-    @if (pieChartData$ | async; as pieChartData) {
-        <mat-grid-tile rowspan="3">
-            <google-chart
-                [type]="pieChartType"
-                [data]="pieChartData"
-                [columns]="pieChartColumns"
-                [options]="pieChartOptions"
-                [width]="750"
-                [height]="300"
-            >
-            </google-chart>
-        </mat-grid-tile>
-    }
+    <mat-grid-tile rowspan="3">
+        <google-chart
+            [type]="pieChartType"
+            [data]="pieChartData"
+            [columns]="pieChartColumns"
+            [options]="pieChartOptions"
+            [width]="750"
+            [height]="300"
+            (select)="toDetail($event)"
+        >
+        </google-chart>
+    </mat-grid-tile>
 </mat-grid-list>

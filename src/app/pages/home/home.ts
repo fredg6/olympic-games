@@ -1,7 +1,8 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
-import { ChartType, GoogleChart } from 'angular-google-charts';
+import { Router } from '@angular/router';
+import { ChartSelectionChangedEvent, ChartType, GoogleChart } from 'angular-google-charts';
 import { map, mergeAll, Observable, reduce, take } from 'rxjs';
 import { ChartDataType } from '../../core/models/chart-data.type';
 import { Olympic } from '../../core/models/Olympic';
@@ -28,7 +29,7 @@ export class Home implements OnInit {
     {'type': 'string', 'role': 'tooltip', 'p': {'html': true}},
     'Country id'
   ];
-  pieChartData$!: Observable<ChartDataType[][]>;
+  pieChartData!: ChartDataType[][];
   pieChartOptions = {
     backgroundColor: 'transparent',
     colors: ['#793D52', '#89A1DB', '#9780A1', '#BFE0F1', '#B8CBE7', '#956065'],
@@ -43,18 +44,31 @@ export class Home implements OnInit {
   };
 
   olympics$!: Observable<Olympic[]>;
-  numberOfJOs$!: Observable<number>;
+  numberOfJOs!: number;
 
   private olympicService = inject(OlympicService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics$();
-    this.numberOfJOs$ = this.computeNumberOfJOs();
-    this.pieChartData$ = this.buildPieChartData();
+    this.computeNumberOfJOs();
+    this.buildPieChartData();
   }
   
-  private computeNumberOfJOs(): Observable<number> {
-    return this.olympics$.pipe(
+  protected toDetail(event: ChartSelectionChangedEvent): void {
+    const rowIndex = event.selection.at(0)?.row;
+    let rowData!: ChartDataType[];
+    if (rowIndex !== null && rowIndex !== undefined) {
+      rowData = this.pieChartData[rowIndex];
+      const countryId = rowData.at(3);
+      this.router.navigateByUrl(`detail/${countryId}`);
+    } else {
+      console.warn('Invalid row index:', rowIndex);
+    }
+  }
+  
+  private computeNumberOfJOs(): void {
+    this.olympics$.pipe(
       take(1),
       mergeAll(),
       map(olympic => olympic.participations),
@@ -65,15 +79,16 @@ export class Home implements OnInit {
         return set;
       }, new Set<number>()),
       map(set => set.size)
-    );
+    ).subscribe(numberOfJOs => this.numberOfJOs = numberOfJOs);
   }
   
-  private buildPieChartData(): Observable<ChartDataType[][]> {
-    return this.olympics$.pipe( 
+  private buildPieChartData(): void {
+    this.olympics$.pipe(
+      take(1), 
       map(olympics =>
         olympics.map(olympic => this.buildPieChartDataItem(olympic))
       )
-    );
+    ).subscribe(pieChartData => this.pieChartData = pieChartData);
   }
 
   private buildPieChartDataItem(olympic: Olympic): ChartDataType[] {
