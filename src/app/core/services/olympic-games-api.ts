@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Olympic } from '../models/Olympic';
 import { Participation } from '../models/participation';
@@ -11,7 +11,7 @@ import { Participation } from '../models/participation';
 export class OlympicService {
   private http = inject(HttpClient);
   private olympicUrl = '/assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<Olympic[]>([]);
+  private olympics$ = new Subject<Olympic[]>();
 
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
@@ -25,7 +25,7 @@ export class OlympicService {
     );
   }
 
-  getOlympics() {
+  getOlympics$() {
     return this.olympics$.asObservable();
   }
 

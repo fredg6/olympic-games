@@ -1,0 +1,1 @@
+export type ChartDataType = string | number;
