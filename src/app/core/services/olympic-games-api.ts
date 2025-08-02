@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { TotalNumberDataType } from '../../core/models/total-number-data.type';
 import { Olympic } from '../models/Olympic';
 import { Participation } from '../models/participation';
 
@@ -11,7 +12,7 @@ import { Participation } from '../models/participation';
 export class OlympicService {
   private http = inject(HttpClient);
   private olympicUrl = '/assets/mock/olympic.json';
-  private olympics$ = new Subject<Olympic[]>();
+  private olympics$ = new BehaviorSubject<Olympic[]>([]);
 
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
@@ -29,9 +30,17 @@ export class OlympicService {
     return this.olympics$.asObservable();
   }
 
-  computeCountryTotalNumberOfMedals(countryParticipations: Participation[]): number {
+  computeCountryTotalNumber(countryParticipations: Participation[], dataType: TotalNumberDataType): number {
     let toReturn: number = 0;
-    countryParticipations.forEach(p => toReturn += p.medalsCount)
+    
+    countryParticipations.forEach(p => {
+      if (dataType === 'medals') {
+        toReturn += p.medalsCount;
+      } else if (dataType === 'athletes') {
+        toReturn += p.athletesCount;
+      }
+    });
+    
     return toReturn;
   }
 }

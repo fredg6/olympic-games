@@ -1,0 +1,1 @@
+export type TotalNumberDataType = 'medals' | 'athletes';

@@ -69,7 +69,7 @@ export class Home implements OnInit {
   
   private computeNumberOfJOs(): void {
     this.olympics$.pipe(
-      take(1),
+      take(2),
       mergeAll(),
       map(olympic => olympic.participations),
       mergeAll(),
@@ -84,7 +84,6 @@ export class Home implements OnInit {
   
   private buildPieChartData(): void {
     this.olympics$.pipe(
-      take(1), 
       map(olympics =>
         olympics.map(olympic => this.buildPieChartDataItem(olympic))
       )
@@ -95,7 +94,7 @@ export class Home implements OnInit {
     let pieChartDataItem: ChartDataType[] = [];
     
     pieChartDataItem.push(olympic.country);
-    const countryTotalNumberOfMedals = this.olympicService.computeCountryTotalNumberOfMedals(olympic.participations);
+    const countryTotalNumberOfMedals = this.olympicService.computeCountryTotalNumber(olympic.participations, 'medals');
     pieChartDataItem.push(countryTotalNumberOfMedals);
     pieChartDataItem.push(this.createPieChartTooltipHTMLContent(olympic.country, countryTotalNumberOfMedals));
     pieChartDataItem.push(olympic.id);
