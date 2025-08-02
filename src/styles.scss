@@ -41,11 +41,11 @@ body { margin: 0; font-family: "Montserrat", sans-serif; }
   color: white;
 }
 
-// Normalement dans home.scss mais ne fonctionne pas
 mat-grid-tile div {
   justify-content: center;
 }
-.pieChartTooltip {
+
+.chartTooltip {
   padding: 5px;
   max-width: fit-content;
   border-radius: 5px;

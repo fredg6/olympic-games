@@ -8,8 +8,22 @@
             <app-page-info-card label="Total number of medals" [value]="totalNumberOfMedals"></app-page-info-card>
             <app-page-info-card label="Total number of athletes" [value]="totalNumberOfAthletes"></app-page-info-card>
         </mat-grid-tile>
+        <mat-grid-tile rowspan="3">
+            <google-chart
+                [type]="lineChartType"
+                [data]="lineChartData"
+                [columns]="lineChartColumns"
+                [options]="lineChartOptions"
+                [width]="1000"
+                [height]="300"
+            >
+            </google-chart>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button matFab extended (click)="goBack()">Retour</button>
+        </mat-grid-tile>
     </mat-grid-list>
 } @else {
     <div>No data found.</div>
+    <button matFab extended (click)="goBack()">Retour</button>
 }
-<button (click)="goBack()">BACK</button>

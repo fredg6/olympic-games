@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { TotalNumberDataType } from '../../core/models/total-number-data.type';
+import { ChartDataType } from '../models/chart-data.type';
 import { Olympic } from '../models/Olympic';
 import { Participation } from '../models/participation';
 
@@ -12,7 +13,7 @@ import { Participation } from '../models/participation';
 export class OlympicService {
   private http = inject(HttpClient);
   private olympicUrl = '/assets/mock/olympic.json';
-  private olympics$ = new BehaviorSubject<Olympic[]>([]);
+  private olympics$ = new ReplaySubject<Olympic[]>();
 
   loadInitialData() {
     return this.http.get<Olympic[]>(this.olympicUrl).pipe(
@@ -42,5 +43,12 @@ export class OlympicService {
     });
     
     return toReturn;
+  }
+
+  createChartTooltipHTMLContent(label: ChartDataType, value: ChartDataType): string {
+    return '<div class="chartTooltip">' +
+        '<span>' + label + '</span><br/>' +
+        '<span><img src="/assets/images/medal.svg">' + value + '</span>' +
+        '</div>';
   }
 }

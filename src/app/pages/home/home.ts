@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
 import { Router } from '@angular/router';
 import { ChartSelectionChangedEvent, ChartType, GoogleChart } from 'angular-google-charts';
-import { map, mergeAll, Observable, reduce, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ChartDataType } from '../../core/models/chart-data.type';
 import { Olympic } from '../../core/models/Olympic';
 import { OlympicService } from '../../core/services/olympic-games-api';
@@ -60,34 +60,25 @@ export class Home implements OnInit {
     let rowData!: ChartDataType[];
     if (rowIndex !== null && rowIndex !== undefined) {
       rowData = this.pieChartData[rowIndex];
-      const countryId = rowData.at(3);
-      this.router.navigateByUrl(`detail/${countryId}`);
+      const id = rowData.at(3);
+      this.router.navigateByUrl(`detail/${id}`);
     } else {
       console.warn('Invalid row index:', rowIndex);
     }
   }
   
   private computeNumberOfJOs(): void {
-    this.olympics$.pipe(
-      take(2),
-      mergeAll(),
-      map(olympic => olympic.participations),
-      mergeAll(),
-      map(participation => participation.year),
-      reduce((set, year) => { 
-        set.add(year);
-        return set;
-      }, new Set<number>()),
-      map(set => set.size)
-    ).subscribe(numberOfJOs => this.numberOfJOs = numberOfJOs);
+    this.olympics$.subscribe(olympics => {
+      let uniqueParticipationYears = 
+        new Set(olympics.flatMap(olympic => olympic.participations.flatMap(participation => participation.year)));
+      this.numberOfJOs = uniqueParticipationYears.size;
+    });
   }
   
   private buildPieChartData(): void {
-    this.olympics$.pipe(
-      map(olympics =>
-        olympics.map(olympic => this.buildPieChartDataItem(olympic))
-      )
-    ).subscribe(pieChartData => this.pieChartData = pieChartData);
+    this.olympics$.subscribe(olympics =>
+      this.pieChartData = olympics.map(olympic => this.buildPieChartDataItem(olympic))
+    );
   }
 
   private buildPieChartDataItem(olympic: Olympic): ChartDataType[] {
@@ -96,16 +87,9 @@ export class Home implements OnInit {
     pieChartDataItem.push(olympic.country);
     const countryTotalNumberOfMedals = this.olympicService.computeCountryTotalNumber(olympic.participations, 'medals');
     pieChartDataItem.push(countryTotalNumberOfMedals);
-    pieChartDataItem.push(this.createPieChartTooltipHTMLContent(olympic.country, countryTotalNumberOfMedals));
+    pieChartDataItem.push(this.olympicService.createChartTooltipHTMLContent(olympic.country, countryTotalNumberOfMedals));
     pieChartDataItem.push(olympic.id);
 
     return pieChartDataItem;
-  }
-
-  private createPieChartTooltipHTMLContent(country: string, totalNumberOfMedals: number): string {
-    return '<div class="pieChartTooltip">' +
-        '<span>' + country + '</span><br/>' +
-        '<span><img src="/assets/images/medal.svg">' + totalNumberOfMedals + '</span>' +
-        '</div>';
   }
 }
