@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
 import { Router } from '@angular/router';
 import { ChartSelectionChangedEvent, ChartType, GoogleChart } from 'angular-google-charts';
@@ -51,6 +52,7 @@ export class Home implements OnInit {
   private olympicService = inject(OlympicService);
   private router = inject(Router);
   private breakpointObserver = inject(BreakpointObserver);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics$();
@@ -72,7 +74,9 @@ export class Home implements OnInit {
   }
   
   private computeNumberOfJOs(): void {
-    this.olympics$.subscribe(olympics => {
+    this.olympics$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(olympics => {
       let uniqueParticipationYears = 
         new Set(olympics.flatMap(olympic => olympic.participations.flatMap(participation => participation.year)));
       this.numberOfJOs = uniqueParticipationYears.size;
@@ -80,7 +84,9 @@ export class Home implements OnInit {
   }
   
   private buildPieChartData(): void {
-    this.olympics$.subscribe(olympics =>
+    this.olympics$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(olympics =>
       this.pieChartData = olympics.map(olympic => this.buildPieChartDataItem(olympic))
     );
   }
@@ -103,7 +109,9 @@ export class Home implements OnInit {
       Breakpoints.HandsetPortrait
     ]);
     
-    layoutChanges.subscribe(result => this.activateResponsiveLayout(result));
+    layoutChanges.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(result => this.activateResponsiveLayout(result));
   }
 
   private activateResponsiveLayout(layoutChange: BreakpointState) {

@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -95,6 +96,7 @@ export class Detail implements OnInit {
   private route = inject(ActivatedRoute);
   private olympicService = inject(OlympicService);
   private breakpointObserver = inject(BreakpointObserver);
+  private destroyRef = inject(DestroyRef);
   
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -118,7 +120,9 @@ export class Detail implements OnInit {
   }
 
   private computeTotalNumber(dataType: TotalNumberDataType): void {
-    this.olympic$.subscribe(olympic => {
+    this.olympic$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(olympic => {
       if (dataType === 'medals') {
         this.totalNumberOfMedals = this.olympicService.computeCountryTotalNumber(olympic.participations, 'medals');
       } else if (dataType === 'athletes') {
@@ -128,7 +132,9 @@ export class Detail implements OnInit {
   }
 
   private buildLineChartData(): void {
-    this.olympic$.subscribe(olympic => {
+    this.olympic$.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(olympic => {
       let lineChartData: ChartDataType[][] = [];
       
       olympic.participations.forEach(participation => {
@@ -150,7 +156,9 @@ export class Detail implements OnInit {
       Breakpoints.HandsetPortrait
     ]);
     
-    layoutChanges.subscribe(result => this.activateResponsiveLayout(result));
+    layoutChanges.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(result => this.activateResponsiveLayout(result));
   }
 
   private activateResponsiveLayout(layoutChange: BreakpointState) {
