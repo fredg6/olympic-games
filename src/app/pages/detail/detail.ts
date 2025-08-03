@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
@@ -25,6 +26,8 @@ import { PageInfoCard } from '../../shared/page-info-card/page-info-card';
   styleUrl: './detail.scss'
 })
 export class Detail implements OnInit {
+  gridRowHeight = 110;
+  lineChartRowspan = 3;
   lineChartType = ChartType.LineChart;
   lineChartColumns = [
     'Year', 
@@ -34,6 +37,9 @@ export class Detail implements OnInit {
   lineChartData!: ChartDataType[][];
   lineChartOptions = {
     backgroundColor: 'transparent',
+    chartArea: {
+      width: 'auto'
+    },
     colors: ['#793D52', '#89A1DB', '#9780A1', '#BFE0F1', '#B8CBE7', '#956065'],
     fontName: 'Montserrat', 
     hAxis : {
@@ -62,7 +68,8 @@ export class Detail implements OnInit {
     },
     tooltip: {
       ignoreBounds: true,
-      isHtml: true
+      isHtml: true,
+      trigger: 'focus'
     }, 
     vAxis : {
       baselineColor: 'transparent',
@@ -87,6 +94,7 @@ export class Detail implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private olympicService = inject(OlympicService);
+  private breakpointObserver = inject(BreakpointObserver);
   
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -94,6 +102,7 @@ export class Detail implements OnInit {
     this.computeTotalNumber('medals');
     this.computeTotalNumber('athletes');
     this.buildLineChartData();
+    this.observeLayoutChanges();
   }
   
   protected goBack(): void {
@@ -133,5 +142,29 @@ export class Detail implements OnInit {
 
       this.lineChartData = lineChartData;
     });
+  }
+
+  private observeLayoutChanges() {
+    const layoutChanges = this.breakpointObserver.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait
+    ]);
+    
+    layoutChanges.subscribe(result => this.activateResponsiveLayout(result));
+  }
+
+  private activateResponsiveLayout(layoutChange: BreakpointState) {
+    const layoutChangeBreakpoints = layoutChange.breakpoints;
+    if (layoutChangeBreakpoints[Breakpoints.HandsetLandscape]) {
+      this.gridRowHeight = 120;
+      this.lineChartRowspan = 2;
+      this.lineChartOptions.tooltip.trigger = 'selection';
+    } else if (layoutChangeBreakpoints[Breakpoints.HandsetPortrait]) {
+      this.gridRowHeight = 155;
+      this.lineChartRowspan = 2;
+      this.lineChartOptions.chartArea.width = '300';
+      this.lineChartOptions.tooltip.ignoreBounds = false;
+      this.lineChartOptions.tooltip.trigger = 'selection';
+    }
   }
 }
