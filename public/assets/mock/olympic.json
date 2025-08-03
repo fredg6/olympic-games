@@ -5,37 +5,23 @@
     "participations": [
       {
         "id": 1,
-        "year": 2008,
-        "city": "Pékin",
-        "medalsCount": 55,
-        "athletesCount": 380
-      },
-      {
-        "id": 2,
         "year": 2012,
         "city": "Londres",
         "medalsCount": 28,
         "athletesCount": 372
       },
       {
-        "id": 3,
+        "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
         "medalsCount": 28,
         "athletesCount": 375
       },
       {
-        "id": 4,
+        "id": 3,
         "year": 2020,
         "city": "Tokyo",
         "medalsCount": 40,
-        "athletesCount": 381
-      },
-      {
-        "id": 5,
-        "year": 2024,
-        "city": "Paris",
-        "medalsCount": 35,
         "athletesCount": 381
       }
     ]
@@ -46,38 +32,24 @@
     "participations": [
       {
         "id": 1,
-        "year": 2008,
-        "city": "Pékin",
-        "medalsCount": 30,
-        "athletesCount": 315
-      },
-      {
-        "id": 2,
         "year": 2012,
         "city": "Londres",
         "medalsCount": 20,
         "athletesCount": 315
       },
       {
-        "id": 3,
+        "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
         "medalsCount": 17,
         "athletesCount": 312
       },
       {
-        "id": 4,
+        "id": 3,
         "year": 2020,
         "city": "Tokyo",
         "medalsCount": 17,
         "athletesCount": 321
-      },
-      {
-        "id": 5,
-        "year": 2024,
-        "city": "Paris",
-        "medalsCount": 26,
-        "athletesCount": 330
       }
     ]
   },
@@ -87,38 +59,24 @@
     "participations": [
       {
         "id": 1,
-        "year": 2008,
-        "city": "Pékin",
-        "medalsCount": 120,
-        "athletesCount": 600
-      },
-      {
-        "id": 2,
         "year": 2012,
         "city": "Londres",
         "medalsCount": 109,
         "athletesCount": 610
       },
       {
-        "id": 3,
+        "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
         "medalsCount": 123,
         "athletesCount": 652
       },
       {
-        "id": 4,
+        "id": 3,
         "year": 2020,
         "city": "Tokyo",
         "medalsCount": 113,
         "athletesCount": 626
-      },
-      {
-        "id": 5,
-        "year": 2024,
-        "city": "Paris",
-        "medalsCount": 127,
-        "athletesCount": 616
       }
     ]
   },
@@ -128,38 +86,24 @@
     "participations": [
       {
         "id": 1,
-        "year": 2008,
-        "city": "Pékin",
-        "medalsCount": 37,
-        "athletesCount": 400
-      },
-      {
-        "id": 2,
         "year": 2012,
         "city": "Londres",
         "medalsCount": 44,
         "athletesCount": 425
       },
       {
-        "id": 3,
+        "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
         "medalsCount": 44,
         "athletesCount": 422
       },
       {
-        "id": 4,
+        "id": 3,
         "year": 2020,
         "city": "Tokyo",
         "medalsCount": 37,
         "athletesCount": 425
-      },
-      {
-        "id": 5,
-        "year": 2024,
-        "city": "Paris",
-        "medalsCount": 43,
-        "athletesCount": 435
       }
     ]
   },
@@ -169,38 +113,24 @@
     "participations": [
       {
         "id": 1,
-        "year": 2008,
-        "city": "Pékin",
-        "medalsCount": 55,
-        "athletesCount": 350
-      },
-      {
-        "id": 2,
         "year": 2012,
         "city": "Londres",
         "medalsCount": 35,
         "athletesCount": 423
       },
       {
-        "id": 3,
+        "id": 2,
         "year": 2016,
         "city": "Rio de Janeiro",
         "medalsCount": 45,
         "athletesCount": 412
       },
       {
-        "id": 4,
+        "id": 3,
         "year": 2020,
         "city": "Tokyo",
         "medalsCount": 33,
         "athletesCount": 403
-      },
-      {
-        "id": 5,
-        "year": 2024,
-        "city": "Paris",
-        "medalsCount": 55,
-        "athletesCount": 425
       }
     ]
   }
