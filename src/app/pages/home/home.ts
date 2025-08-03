@@ -1,3 +1,4 @@
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
@@ -22,6 +23,8 @@ import { PageInfoCard } from '../../shared/page-info-card/page-info-card';
   styleUrls: ['./home.scss'],
 })
 export class Home implements OnInit {
+  gridRowHeight!: number;
+  pieChartRowspan!: number;
   pieChartType = ChartType.PieChart;
   pieChartColumns = [
     'Country', 
@@ -34,7 +37,7 @@ export class Home implements OnInit {
     backgroundColor: 'transparent',
     colors: ['#793D52', '#89A1DB', '#9780A1', '#BFE0F1', '#B8CBE7', '#956065'],
     legend: {
-      position: 'labeled', 
+      position: 'labeled',
       textStyle: {fontName: 'Montserrat', fontSize: 18}
     },
     pieSliceBorderColor: 'transparent',
@@ -48,11 +51,13 @@ export class Home implements OnInit {
 
   private olympicService = inject(OlympicService);
   private router = inject(Router);
+  private breakpointObserver = inject(BreakpointObserver);
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics$();
     this.computeNumberOfJOs();
     this.buildPieChartData();
+    this.observeLayoutChanges();
   }
   
   protected toDetail(event: ChartSelectionChangedEvent): void {
@@ -91,5 +96,34 @@ export class Home implements OnInit {
     pieChartDataItem.push(olympic.id);
 
     return pieChartDataItem;
+  }
+
+  private observeLayoutChanges() {
+    const layoutChanges = this.breakpointObserver.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait
+    ]);
+    
+    layoutChanges.subscribe(result => this.activateResponsiveLayout(result));
+  }
+
+  private activateResponsiveLayout(layoutChange: BreakpointState) {
+    const layoutChangeBreakpoints = layoutChange.breakpoints;
+    if (layoutChangeBreakpoints[Breakpoints.HandsetLandscape]) {
+      this.gridRowHeight = 90;
+      this.pieChartRowspan = 2;
+      this.pieChartOptions.legend.position = 'labeled';
+      this.pieChartOptions.pieSliceText = 'none';
+    } else if (layoutChangeBreakpoints[Breakpoints.HandsetPortrait]) {
+      this.gridRowHeight = 110;
+      this.pieChartRowspan = 3;
+      this.pieChartOptions.legend.position = 'none';
+      this.pieChartOptions.pieSliceText = 'label';
+    } else {
+      this.gridRowHeight = 110;
+      this.pieChartRowspan = 3;
+      this.pieChartOptions.legend.position = 'labeled';
+      this.pieChartOptions.pieSliceText = 'none';
+    }
   }
 }
