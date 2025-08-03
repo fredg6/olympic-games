@@ -41,7 +41,7 @@ export class Detail implements OnInit {
       format: '#',
       gridlines: {
         color: '#858585',
-        interval: 4
+        interval: [1, 4]
       },
       minorGridlines: {
         count: 0
@@ -69,7 +69,6 @@ export class Detail implements OnInit {
       format: '#',
       gridlines: {
         color: '#858585',
-        /* count: 5 */
       },
       minorGridlines: {
         count: 0
