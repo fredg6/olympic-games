@@ -43,6 +43,12 @@ body { margin: 0; font-family: "Montserrat", sans-serif; }
 
 mat-grid-tile div {
   justify-content: center;
+  button {
+    background-color: #04838F !important;
+    color: white !important;
+    font-family: "Montserrat", sans-serif !important;
+    font-size: large !important;
+  }
 }
 
 .chartTooltip {

@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChartType, GoogleChart } from 'angular-google-charts';
@@ -17,7 +17,7 @@ import { PageInfoCard } from '../../shared/page-info-card/page-info-card';
     GoogleChart,
     MatGridListModule,
     MatGridTile,
-    MatButtonModule,
+    MatButton,
     PageInfoCard,
     AsyncPipe
   ],

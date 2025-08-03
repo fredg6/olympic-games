@@ -20,10 +20,10 @@
             </google-chart>
         </mat-grid-tile>
         <mat-grid-tile>
-            <button matFab extended (click)="goBack()">Retour</button>
+            <button matButton="elevated" (click)="goBack()">Retour</button>
         </mat-grid-tile>
     </mat-grid-list>
 } @else {
     <div>No data found.</div>
-    <button matFab extended (click)="goBack()">Retour</button>
+    <button matButton="elevated" (click)="goBack()">Retour</button>
 }
