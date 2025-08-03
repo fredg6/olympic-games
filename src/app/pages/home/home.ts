@@ -23,8 +23,7 @@ import { PageInfoCard } from '../../shared/page-info-card/page-info-card';
   styleUrls: ['./home.scss'],
 })
 export class Home implements OnInit {
-  gridRowHeight!: number;
-  pieChartRowspan!: number;
+  gridRowHeight = 110;
   pieChartType = ChartType.PieChart;
   pieChartColumns = [
     'Country', 
@@ -110,20 +109,10 @@ export class Home implements OnInit {
   private activateResponsiveLayout(layoutChange: BreakpointState) {
     const layoutChangeBreakpoints = layoutChange.breakpoints;
     if (layoutChangeBreakpoints[Breakpoints.HandsetLandscape]) {
-      this.gridRowHeight = 90;
-      this.pieChartRowspan = 2;
-      this.pieChartOptions.legend.position = 'labeled';
-      this.pieChartOptions.pieSliceText = 'none';
+      this.gridRowHeight = 80;
     } else if (layoutChangeBreakpoints[Breakpoints.HandsetPortrait]) {
-      this.gridRowHeight = 110;
-      this.pieChartRowspan = 3;
       this.pieChartOptions.legend.position = 'none';
       this.pieChartOptions.pieSliceText = 'label';
-    } else {
-      this.gridRowHeight = 110;
-      this.pieChartRowspan = 3;
-      this.pieChartOptions.legend.position = 'labeled';
-      this.pieChartOptions.pieSliceText = 'none';
     }
   }
 }

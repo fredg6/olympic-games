@@ -8,7 +8,7 @@
             <app-page-info-card label="Number of countries" [value]="numberOfCountries" />
         }
     </mat-grid-tile>
-    <mat-grid-tile [rowspan]="pieChartRowspan">
+    <mat-grid-tile rowspan="3">
         <google-chart
             [type]="pieChartType"
             [data]="pieChartData"
